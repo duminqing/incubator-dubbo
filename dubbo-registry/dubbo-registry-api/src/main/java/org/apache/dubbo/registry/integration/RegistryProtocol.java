@@ -219,7 +219,8 @@ public class RegistryProtocol implements Protocol {
                 if (exporter == null) {
 
                     final Invoker<?> invokerDelegete = new InvokerDelegate<T>(originInvoker, providerUrl);
-                    exporter = new ExporterChangeableWrapper<T>((Exporter<T>) protocol.export(invokerDelegete), originInvoker);
+                    Exporter exporter1 = protocol.export(invokerDelegete);
+                    exporter = new ExporterChangeableWrapper<T>(exporter1, originInvoker);
                     bounds.put(key, exporter);
                 }
             }

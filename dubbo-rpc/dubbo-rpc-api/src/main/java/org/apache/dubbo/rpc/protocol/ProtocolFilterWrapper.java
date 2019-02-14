@@ -103,9 +103,12 @@ public class ProtocolFilterWrapper implements Protocol {
     @Override
     public <T> Exporter<T> export(Invoker<T> invoker) throws RpcException {
         if (Constants.REGISTRY_PROTOCOL.equals(invoker.getUrl().getProtocol())) {
-            return protocol.export(invoker);
+            Exporter exporter = protocol.export(invoker);
+            return exporter;
         }
-        return protocol.export(buildInvokerChain(invoker, Constants.SERVICE_FILTER_KEY, Constants.PROVIDER));
+        Invoker invoker1 = buildInvokerChain(invoker, Constants.SERVICE_FILTER_KEY, Constants.PROVIDER);
+        Exporter exporter = protocol.export(invoker1);
+        return exporter;
     }
 
     @Override
